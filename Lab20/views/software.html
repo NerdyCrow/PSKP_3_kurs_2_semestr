@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+
+
+        function GetOne() {
+
+            fetch(`http://localhost:3000/api/software/${Id.value}`, {
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }
+            })
+                .then(response => response.json())
+                .then(pdata => {
+                    result.innerHTML = '';
+                    console.log('pdata', pdata);
+                    if (pdata.err != undefined) {
+                        let erm = document.getElementById('err')
+                        erm.innerHTML = pdata.err
+                    } else {
+
+                        let content = '<table class="table"><thead><tr>' +
+                            '      <th scope="col">Id</th>\n' +
+                            '      <th scope="col">Name</th>\n' +
+                            '      <th scope="col">Version</th>\n' +
+                            '      <th scope="col">Price</th>\n' +
+                            '      <th scope="col">OwnerId</th>\n' +
+                            '      <th scope="col">DateCreated</th>\n' +
+                            '    </tr></thead><tbody>\n';
+
+
+
+                        content += '<tr><td>' + pdata.Id + '</td><td>' + pdata.Name + '</td><td>' + pdata.Version + '</td><td>' + pdata.Price + '</td><td>' + pdata.OwnerId + '</td><td>' + pdata.DateCreated + '</td></tr>';
+
+                        result.innerHTML = content + '</tbody></table>';
+                    }
+                });
+        }
+        function Get() {
+            fetch('http://localhost:3000/api/software', {
+                method: 'GET', mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }
+            })
+                .then(response => response.json())
+                .then(pdata => {
+                    result.innerHTML = '';
+                    console.log('pdata', pdata);
+                    if (pdata.err != undefined) {
+                        let erm = document.getElementById('err')
+                        erm.innerHTML = pdata.err
+                    } else {
+                        console.log(pdata);
+                        let content = '<table class="table"><thead><tr>' +
+                            '      <th scope="col">Id</th>\n' +
+                            '      <th scope="col">Name</th>\n' +
+                            '      <th scope="col">Version</th>\n' +
+                            '      <th scope="col">Price</th>\n' +
+                            '      <th scope="col">OwnerId</th>\n' +
+                            '      <th scope="col">DateCreated</th>\n' +
+                            '    </tr></thead><tbody>\n';
+
+                        for (let i = 0; i < pdata.length; i++) {
+                            content += '<tr><td>' + pdata[i]['Id'] + '</td><td>' + pdata[i]['Name'] + '</td><td>' + pdata[i]['Version'] + '</td><td>' + pdata[i]['Price'] + '</td><td>' + pdata[i]['OwnerId'] + '</td><td>' + pdata[i]['DateCreated'] + '</td></tr>';
+                        }
+                        result.innerHTML = content + '</tbody></table>';
+                    }
+                });
+        }
+        function Post() {
+            if (Name.value) {
+                fetch('http://localhost:3000/api/software', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                    body: JSON.stringify({ Name: Name.value, Version: Version.value, Price: Price.value, OwnerId: OwnerId.value, DateCreated: DateCreated.value })
+                })
+                    .then(response => response.json())
+                    .then((pdata) => {
+                        if (pdata.message != undefined) {
+                            let erm = document.getElementById('err')
+                            erm.innerHTML = pdata.message
+
+                        } else {
+                            let erm = document.getElementById('err')
+                            erm.innerHTML = ""
+                        }
+                    });
+            }
+            Get();
+        }
+        function Put() {
+
+            fetch('http://localhost:3000/api/software', {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                body: JSON.stringify({ Id: Id.value, Name: Name.value, Version: Version.value, Price: Price.value, OwnerId: OwnerId.value, DateCreated: DateCreated.value })
+            })
+                .then(response => response.json())
+                .then((pdata) => {
+                    if (pdata.message != undefined) {
+                        let erm = document.getElementById('err')
+                        erm.innerHTML = pdata.message
+
+                    } else {
+                        let erm = document.getElementById('err')
+                        erm.innerHTML = ""
+                    }
+                });
+            Get();
+
+        }
+        function Delete() {
+            if (Id.value) {
+                fetch(`http://localhost:3000/api/software/${Id.value}`, {
+                    method: 'DELETE'
+                })
+                    .then(response => response.json())
+                    .then((pdata) => {
+                        if (pdata.message != undefined) {
+                            let erm = document.getElementById('err')
+                            erm.innerHTML = pdata.message
+
+                        } else {
+                            let erm = document.getElementById('err')
+                            erm.innerHTML = ""
+                        }
+
+                    });
+            }
+            Get();
+        }
+    </script>
+
+</head>
+<body>
+    <div>
+        <div class="">
+            <p class="" id="err"></p>
+            <form style="margin-top: 2%; "></form>
+            <div class="" style="margin:auto; padding-bottom: 1%;">
+                <button onclick="Get()" class="">Список ПО</button>
+                <button onclick="GetOne()" class="">ПО по id</button>
+                <button onclick="Post()" class="">Добавить ПО</button>
+                <button onclick="Put()" class="">Редактировать ПО</button>
+
+                <button onclick="Delete()" class="">Удалить ПО</button>
+            </div>
+            <input type="text" id="Id" placeholder="id" />
+            <input type="text" id="Name" placeholder="Name" />
+            <input type="text" id="Version" placeholder="Version" />
+            <input type="text" id="Price" placeholder="Price" />
+            <input type="text" id="OwnerId" placeholder="OwnerId" />
+            <input type="date" id="DateCreated" placeholder="DateCreated" />
+        </div>
+
+        <p class="" id="result"></p>
+
+
+</body>
+</html>

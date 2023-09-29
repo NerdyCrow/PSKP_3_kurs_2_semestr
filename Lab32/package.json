@@ -1,0 +1,24 @@
+{
+  "name": "Lab31",
+  "version": "1.0.0",
+  "description": "",
+  "main": "31-01.js",
+  "directories": {
+    "doc": "doc"
+  },
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.3",
+    "path": "^0.12.7",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^4.3.0",
+    "uuid": "^8.3.2",
+    "yamljs": "^0.3.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

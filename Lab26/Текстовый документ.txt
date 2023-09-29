@@ -1,0 +1,8 @@
+---resource-----------
+openssl genrsa -out LAB.key 2048
+openssl req -new -key LAB.key -out LAB.csr -sha256 -config LAB.cfg
+
+-------1------------1---------1
+openssl genrsa -des3 -out CA.key 2048
+openssl req -x509 -new -key CA.key -days 700 -sha256 -out CA-LAB26-SDV.crt
+openssl x509 -req -in LAB.csr -CA CA-LAB26-SDV.crt -CAkey CA.key -CAcreateserial -out Resource.crt -days 365 -sha256 -extensions v3_req -extfile LAB.cfg

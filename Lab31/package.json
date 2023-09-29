@@ -1,0 +1,15 @@
+{
+  "name": "lab14-telegram",
+  "version": "1.0.0",
+  "description": "",
+  "main": "30-01.js",
+  "scripts": {
+    "start": "node 30-01.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "node-telegram-bot-api": "^0.57.0"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "redis": {
+    "host": "redis-12583.c232.us-east-1-2.ec2.cloud.redislabs.com",
+    "port": 12583,
+    "no_ready_check": true,
+    "auth_pass": "l9PuWaVhwjNWCjSwlLLx55OVFYIbU3Gm"
+  }
+}

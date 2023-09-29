@@ -1,0 +1,14 @@
+<html xmlns:th="http://www.thymeleaf.org">
+
+<div style="width: 90%; display: flex; flex-direction:row; margin: 1vh">
+    <input type="text" id="name" style="width: 70%; height: 5vh;" placeholder="Имя" value="{{name}}">
+    <input type="text" id="number" style="width: 30%; height: 5vh;" placeholder="Телефон" value="{{number}}">
+</div>
+<div style="width: 90%; display: flex; flex-direction:row; justify-content:space-around; margin: 1vh">
+    <button style="width: 30%; height: 5vh; " onclick="Edit()">Изменить</button>
+    <button style="width: 30%; height: 5vh; " onclick="Delete()">Удалить</button>
+
+    {{#reject}}
+    {{/reject}}
+</div>
+</html>

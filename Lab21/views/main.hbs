@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Telephones List</title>
+    <link href="./static/styles.css" rel="stylesheet" type="text/css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="./static/script.js"></script>
+</head>
+<body>
+    <div class="outer-container">
+        {{#if disabled}}
+
+        <div class="notes-container" style="background-color: rgb(211, 211, 211);">
+            {{#each notes}}
+            <a class="block-button" style="background-color: rgb(211, 211, 211);"> {{name}}</br>{{number}} </a>
+            {{/each}}
+        </div>
+
+        {{else}}
+        <div class="notes-container">
+            {{#each notes}}
+            {{> list_btn}}
+            {{/each}}
+        </div>
+        {{/if}}
+
+
+        <div class="partial-content">
+            {{#if add_btn}}
+            {{> add_btn}}
+            {{/if}}
+            {{#if upd}}
+            {{> update_block}}
+            {{/if}}
+            {{#if add}}
+            {{> add_block}}
+            {{/if}}
+        </div>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <script>
+
+
+        function GetOne() {
+
+            fetch(`http://localhost:3000/api/licenses/${Id.value}`, {
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }
+            })
+                .then(response => response.json())
+                .then(pdata => {
+                    result.innerHTML = '';
+                    console.log('pdata', pdata);
+                    if (pdata.err != undefined) {
+                        let erm = document.getElementById('err')
+                        erm.innerHTML = pdata.err
+                    } else {
+
+                        let content = '<table class="table"><thead><tr>' +
+                            '      <th scope="col">Id</th>\n' +
+                            '      <th scope="col">Title</th>\n' +
+                            '      <th scope="col">PaymentDate</th>\n' +
+                            '      <th scope="col">ExpiryDate</th>\n' +
+                            '      <th scope="col">SoftwareId</th>\n' +
+                            '      <th scope="col">CustomerId</th>\n' +
+                            '    </tr></thead><tbody>\n';
+
+
+
+                        content += '<tr><td>' + pdata.Id + '</td><td>' + pdata.Title + '</td><td>' + pdata.PaymentDate + '</td><td>' + pdata.ExpiryDate + '</td><td>' + pdata.SoftwareId + '</td><td>' + pdata.CustomerId + '</td></tr>';
+
+                        result.innerHTML = content + '</tbody></table>';
+                    }
+                });
+        }
+        function Get() {
+            fetch('http://localhost:3000/api/licenses', {
+                method: 'GET', mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }
+            })
+                .then(response => response.json())
+                .then(pdata => {
+                    result.innerHTML = '';
+                    console.log('pdata', pdata);
+                    if (pdata.err != undefined) {
+                        let erm = document.getElementById('err')
+                        erm.innerHTML = pdata.err
+                    } else {
+                        console.log(pdata);
+                        let content = '<table class="table"><thead><tr>' +
+                            '      <th scope="col">Id</th>\n' +
+                            '      <th scope="col">Title</th>\n' +
+                            '      <th scope="col">PaymentDate</th>\n' +
+                            '      <th scope="col">ExpiryDate</th>\n' +
+                            '      <th scope="col">SoftwareId</th>\n' +
+                            '      <th scope="col">CustomerId</th>\n' +
+                            '    </tr></thead><tbody>\n';
+                        for (let i = 0; i < pdata.length; i++) {
+                            content += '<tr><td>' + pdata[i]['Id'] + '</td><td>' + pdata[i]['Title'] + '</td><td>' + pdata[i]['PaymentDate'] + '</td><td>' + pdata[i]['ExpiryDate'] + '</td><td>' + pdata[i]['SoftwareId'] + '</td><td>' + pdata[i]['CustomerId'] + '</td></tr>';
+                        }
+                        result.innerHTML = content + '</tbody></table>';
+                    }
+                });
+        }
+        function Post() {
+            if (Title.value) {
+                fetch('http://localhost:3000/api/licenses', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                    body: JSON.stringify({ Title: Title.value, PaymentDate: PaymentDate.value, ExpiryDate: ExpiryDate.value, SoftwareId: SoftId.value, CustomerId: CustId.value })
+                })
+                    .then(response => response.json())
+                    .then((pdata) => {
+                        if (pdata.message != undefined) {
+                            let erm = document.getElementById('err')
+                            erm.innerHTML = pdata.message
+
+                        } else {
+                            let erm = document.getElementById('err')
+                            erm.innerHTML = ""
+                        }
+                    });
+            }
+            Get();
+        }
+        function Put() {
+
+            fetch('http://localhost:3000/api/licenses', {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                body: JSON.stringify({ Id: Id.value, Title: Title.value, PaymentDate: PaymentDate.value, ExpiryDate: ExpiryDate.value, SoftwareId: SoftId.value, CustomerId: CustId.value })
+            })
+                .then(response => response.json())
+                .then((pdata) => {
+                    if (pdata.message != undefined) {
+                        let erm = document.getElementById('err')
+                        erm.innerHTML = pdata.message
+
+                    } else {
+                        let erm = document.getElementById('err')
+                        erm.innerHTML = ""
+                    }
+                });
+            Get();
+
+        }
+        function Delete() {
+            if (Id.value) {
+                fetch(`http://localhost:3000/api/licenses/${Id.value}`, {
+                    method: 'DELETE'
+                })
+                    .then(response => response.json())
+                    .then((pdata) => {
+                        if (pdata.message != undefined) {
+                            let erm = document.getElementById('err')
+                            erm.innerHTML = pdata.message
+
+                        } else {
+                            let erm = document.getElementById('err')
+                            erm.innerHTML = ""
+                        }
+
+                    });
+            }
+            Get();
+        }
+    </script>
+
+</head>
+<body>
+    <div>
+        <div class="">
+            <p class="" id="err"></p>
+            <form style="margin-top: 2%; "></form>
+            <div class="" style="margin:auto; padding-bottom: 1%;">
+                <button onclick="Get()" class="">Список лицезий</button>
+                <button onclick="GetOne()" class="">Лицензия по id</button>
+                <button onclick="Post()" class="">Добавить лицензию</button>
+                <button onclick="Put()" class="">Редактировать лицензию</button>
+
+                <button onclick="Delete()" class="">Удалить лицезию</button>
+            </div>
+            <input type="text" id="Id" placeholder="id" />
+            <input type="text" id="Title" placeholder="title" />
+            <input type="date" id="PaymentDate" placeholder="PaymentDate" />
+            <input type="date" id="ExpiryDate" placeholder="expiry date" />
+            <input type="text" id="SoftId" placeholder="software id" />
+            <input type="text" id="CustId" placeholder="customer id" />
+        </div>
+
+        <p class="" id="result"></p>
+
+
+</body>
+</html>

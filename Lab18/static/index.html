@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Type" content="text/html; charset=windows-1251" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        function Get() {
+
+            fetch('http://localhost:3000/api/teachers', {
+                method: 'GET', mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }
+            })
+                .then(response => response.json())
+                .then(pdata => {
+                    result.innerHTML = '';
+                    console.log('pdata', pdata);
+                    if (pdata.err != undefined) {
+                        let erm = document.getElementById('err')
+                        erm.innerHTML = pdata.err
+                    } else {
+                        let content = '<table class="table"><thead><tr>' +
+                            '      <th scope="col">teacher</th>\n' +
+                            '      <th scope="col">teacher_name</th>\n' +
+                            '      <th scope="col">pulpit</th>\n' +
+                            '    </tr></thead><tbody>\n';
+                        for (let i = 0; i < pdata.length; i++) {
+                            content += '<tr><td>' + pdata[i]['teacher'] + '</td><td>' + pdata[i]['teacher_name'] + '</td><td>' + pdata[i]['pulpit'] + '</td></tr>';
+                        }
+                        result.innerHTML = content + '</tbody></table>';
+                    }
+                });
+        }
+        function Post() {
+
+            fetch('http://localhost:3000/api/teachers', {
+                method: 'POST', mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                body: JSON.stringify({ teacher: teacher.value, teacher_name: teacher_name.value, pulpit: pulpit.value })
+            })
+                .then(response => response.json())
+                .then((pdata) => {
+                    if (pdata.message != undefined) {
+                        let erm = document.getElementById('err')
+                        erm.innerHTML = pdata.message
+
+                    } else {
+                        let erm = document.getElementById('err')
+                        erm.innerHTML = ""
+                    }
+                });
+                Get();
+        }
+        function Put() {
+
+            fetch('http://localhost:3000/api/teachers', {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                body: JSON.stringify({ teacher: teacher.value, teacher_name: teacher_name.value, pulpit: pulpit.value })
+            })
+                .then(response => response.json())
+                .then((pdata) => {
+                    if (pdata.message != undefined) {
+                        let erm = document.getElementById('err')
+                        erm.innerHTML = pdata.message
+
+                    } else {
+                        let erm = document.getElementById('err')
+                        erm.innerHTML = ""
+                    }
+                });
+                Get();
+
+        }
+        function Delete() {
+            fetch(`http://localhost:3000/api/teachers/${teacher.value}`, {
+                method: 'DELETE'
+            })
+                .then(response => response.json())
+                .then((pdata) => {
+                    if (pdata.message != undefined) {
+                        let erm = document.getElementById('err')
+                        erm.innerHTML = pdata.message
+
+                    } else {
+                        let erm = document.getElementById('err')
+                        erm.innerHTML = ""
+                    }
+
+                });
+                Get();
+        }
+    </script>
+</head>
+
+
+<body>
+    <div>
+        <div class="">
+            <p class="" id="err"></p>
+            <form style="margin-top: 2%; "></form>
+            <div class="" style="margin:auto; padding-bottom: 1%;">
+                <button onclick="Get()" class="">Список преподавателей</button>
+                <button onclick="Post()" class="">Добавить преподавателя</button>
+                <button onclick="Put()" class="">Редактировать преподавателя</button>
+                <button onclick="Delete()" class="">Удалить преподавателя</button>
+            </div>
+
+            <input type="text" class="" id="teacher" placeholder="teacher">
+            <input type="text" id="teacher_name" placeholder="teacher_name" />
+            <input type="text" class="" id="pulpit" placeholder="pulpit" />
+        </div>
+        </form>
+        <p class="" id="result"></p>
+    </div>
+    </div>

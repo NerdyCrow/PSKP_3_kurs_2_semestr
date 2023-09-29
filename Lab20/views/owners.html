@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+
+
+        function GetOne() {
+
+            fetch(`http://localhost:3000/api/owners/${Id.value}`, {
+                method: 'GET', mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }
+            })
+                .then(response => response.json())
+                .then(pdata => {
+                    result.innerHTML = '';
+                    console.log('pdata', pdata);
+                    if (pdata.err != undefined) {
+                        let erm = document.getElementById('err')
+                        erm.innerHTML = pdata.err
+                    } else {
+
+                        let content = '<table class="table"><thead><tr>' +
+                            '      <th scope="col">Id</th>\n' +
+                            '      <th scope="col">ContactId</th>\n' +
+                            '    </tr></thead><tbody>\n';
+
+
+
+                        content += '<tr><td>' + pdata.Id + '</td><td>' + pdata.ContactId + '</td></tr>';
+
+                        result.innerHTML = content + '</tbody></table>';
+                    }
+                });
+        }
+        function Get() {
+            fetch('http://localhost:3000/api/owners', {
+                method: 'GET', mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }
+            })
+                .then(response => response.json())
+                .then(pdata => {
+                    result.innerHTML = '';
+                    console.log('pdata', pdata);
+                    if (pdata.err != undefined) {
+                        let erm = document.getElementById('err')
+                        erm.innerHTML = pdata.err
+                    } else {
+                        console.log(pdata);
+                        let content = '<table class="table"><thead><tr>' +
+                            '      <th scope="col">Id</th>\n' +
+                            '      <th scope="col">ContactId</th>\n' +
+                            '    </tr></thead><tbody>\n';
+
+
+                        for (let i = 0; i < pdata.length; i++) {
+                            content += '<tr><td>' + pdata[i]['Id'] + '</td><td>' + pdata[i]['ContactId'] + '</td></tr>';
+                        }
+                        result.innerHTML = content + '</tbody></table>';
+                    }
+                });
+        }
+        function Post() {
+            console.log(Name.value);
+            if (Name.value && Email.value && Address.value && Phone.value) {
+                fetch('http://localhost:3000/api/contacts/owner', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                    body: JSON.stringify({ Name: Name.value, Email: Email.value, Address: Address.value, Phone: Phone.value })
+                })
+                    .then(response => response.json())
+                    .then((pdata) => {
+                        if (pdata.message != undefined) {
+                            let erm = document.getElementById('err')
+                            erm.innerHTML = pdata.message
+
+                        } else {
+                            let erm = document.getElementById('err')
+                            erm.innerHTML = ""
+                        }
+                    });
+            }
+            else {
+                fetch('http://localhost:3000/api/owners', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                    body: JSON.stringify({ ContactId: contactid.value })
+                })
+                    .then(response => response.json())
+                    .then((pdata) => {
+                        if (pdata.message != undefined) {
+                            let erm = document.getElementById('err')
+                            erm.innerHTML = pdata.message
+
+                        } else {
+                            let erm = document.getElementById('err')
+                            erm.innerHTML = ""
+                        }
+                    });
+                Get();
+            }
+        }
+        function Put() {
+
+            fetch('http://localhost:3000/api/owners', {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                body: JSON.stringify({ Id: Id.value, ContactId: contactid.value })
+            })
+                .then(response => response.json())
+                .then((pdata) => {
+                    if (pdata.message != undefined) {
+                        let erm = document.getElementById('err')
+                        erm.innerHTML = pdata.message
+
+                    } else {
+                        let erm = document.getElementById('err')
+                        erm.innerHTML = ""
+                    }
+                });
+            Get();
+
+        }
+        function Delete() {
+            if (Id.value) {
+                fetch(`http://localhost:3000/api/owners/${Id.value}`, {
+                    method: 'DELETE'
+                })
+                    .then(response => response.json())
+                    .then((pdata) => {
+                        if (pdata.message != undefined) {
+                            let erm = document.getElementById('err')
+                            erm.innerHTML = pdata.message
+
+                        } else {
+                            let erm = document.getElementById('err')
+                            erm.innerHTML = ""
+                        }
+
+                    });
+            }
+            Get();
+        }
+    </script>
+
+</head>
+<body>
+    <div>
+        <div class="">
+            <p class="" id="err"></p>
+            <form style="margin-top: 2%; "></form>
+            <div class="" style="margin:auto; padding-bottom: 1%;">
+                <button onclick="Get()" class="">Список разработчиков</button>
+                <button onclick="GetOne()" class="">Разработчик по id</button>
+                <button onclick="Post()" class="">Добавить разработчика</button>
+                <button onclick="Put()" class="">Редактировать разработчика</button>
+
+                <button onclick="Delete()" class="">Удалить разработчика</button>
+            </div>
+            <input type="text" id="Id" placeholder="id" />
+            <input type="text" id="contactid" placeholder="ContactId" /><br>
+            <input type="text" id="Name" placeholder="Name" />
+            <input type="text" id="Email" placeholder="Email" />
+            <input type="text" id="Address" placeholder="Address" />
+            <input type="text" id="Phone" placeholder="Phone" />
+        </div>
+
+        <p class="" id="result"></p>
+
+
+</body>
+</html>
